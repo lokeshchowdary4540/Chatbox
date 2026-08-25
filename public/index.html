@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Chatbox||SIH-26</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            height: 100vh;
+        }
+
+        .app {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            height: 60px;
+            background: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+        }
+
+        .status {
+            font-size: 13px;
+        }
+
+        .online {
+            color: #bbf7d0;
+        }
+
+        .offline {
+            color: #fecaca;
+        }
+
+        /* Main area */
+        .main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Updates sidebar */
+        .updates {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .updates h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .update {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 5px;
+        }
+
+        .update strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .update small {
+            color: #666;
+        }
+
+        /* Chat */
+        .chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            max-width: 70%;
+        }
+
+        .message .username {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #555;
+        }
+
+        .message .text {
+            display: inline-block;
+            background: white;
+            padding: 10px 14px;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .message.me {
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .message.me .text {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* Input area */
+        .input-area {
+            background: white;
+            border-top: 1px solid #ddd;
+            padding: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-area input:focus {
+            border-color: #2563eb;
+        }
+
+        .input-area button {
+            padding: 0 20px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .input-area button:hover {
+            background: #1d4ed8;
+        }
+
+        /* Mobile */
+        @media (max-width: 700px) {
+            .updates {
+                display: none;
+            }
+
+            .message {
+                max-width: 85%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Header -->
+    <header class="header">
+        <h1>💬 Chatbox</h1>
+
+        <div class="status">
+            <span id="connectionStatus" class="offline">
+                ● Disconnected
+            </span>
+        </div>
+    </header>
+
+
+    <!-- Main -->
+    <main class="main">
+
+        <!-- Updates -->
+        <aside class="updates">
+
+            <h2>📢 Updates</h2>
+
+            <div id="updatesList">
+
+                <div class="update">
+                    <strong>Welcome!</strong>
+                    <p>Welcome to our group chat.</p>
+                    <small>Today</small>
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- Chat -->
+        <section class="chat">
+
+            <!-- Messages -->
+            <div id="messages" class="messages">
+
+                <div class="message">
+                    <div class="username">System</div>
+                    <div class="text">
+                        Welcome to the group!
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Message input -->
+            <form id="messageForm" class="input-area">
+
+                <input
+                    id="messageInput"
+                    type="text"
+                    placeholder="Type a message..."
+                    autocomplete="off"
+                    required
+                >
+
+                <button type="submit">
+                    Send
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /*
+     * WebSocket connection
+     *
+     * Our Node.js server will run on:
+     *
+     * ws://localhost:8080
+     */
+
+    const socket = new WebSocket("ws://localhost:8080");
+
+
+    // HTML elements
+    const messages = document.getElementById("messages");
+    const messageForm = document.getElementById("messageForm");
+    const messageInput = document.getElementById("messageInput");
+    const connectionStatus = document.getElementById("connectionStatus");
+
+
+    // When WebSocket connects
+    socket.addEventListener("open", () => {
+
+        console.log("Connected to server");
+
+        connectionStatus.textContent = "● Connected";
+        connectionStatus.className = "online";
+
+    });
+
+
+    // When server sends a message
+    socket.addEventListener("message", (event) => {
+
+        console.log("Server:", event.data);
+
+        addMessage("Group", event.data, false);
+
+    });
+
+
+    // When connection closes
+    socket.addEventListener("close", () => {
+
+        console.log("Disconnected");
+
+        connectionStatus.textContent = "● Disconnected";
+        connectionStatus.className = "offline";
+
+    });
+
+
+    // When connection fails
+    socket.addEventListener("error", (error) => {
+
+        console.error("WebSocket error:", error);
+
+    });
+
+
+    // Send message
+    messageForm.addEventListener("submit", (event) => {
+
+        event.preventDefault();
+
+        const message = messageInput.value.trim();
+
+        if (message === "") {
+            return;
+        }
+
+        // Make sure WebSocket is connected
+        if (socket.readyState !== WebSocket.OPEN) {
+
+            alert("Not connected to the server.");
+
+            return;
+        }
+
+
+        // Send message to Node.js
+        socket.send(message);
+
+
+        // Show our own message immediately
+        addMessage("You", message, true);
+
+
+        // Clear input
+        messageInput.value = "";
+
+        messageInput.focus();
+
+    });
+
+
+    // Add message to chat
+    function addMessage(username, text, isMe) {
+
+        const messageElement = document.createElement("div");
+
+        messageElement.classList.add("message");
+
+        if (isMe) {
+            messageElement.classList.add("me");
+        }
+
+
+        messageElement.innerHTML = `
+            <div class="username">${escapeHTML(username)}</div>
+            <div class="text">${escapeHTML(text)}</div>
+        `;
+
+
+        messages.appendChild(messageElement);
+
+
+        // Scroll to newest message
+        messages.scrollTop = messages.scrollHeight;
+
+    }
+
+
+    // Prevent HTML injection
+    function escapeHTML(text) {
+
+        const div = document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+
+    }
+
+</script>
+
+</body>
+</html>
