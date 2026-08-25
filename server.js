@@ -79,9 +79,6 @@ wss.on("connection", (socket) => {
 // START SERVER
 // ================================
 
-server.listen(8080, () => {
-
-    console.log("Server running at:");
-    console.log("http://localhost:8080");
-
+server.listen(process.env.PORT || 8080, () => {
+    console.log("Server started");
 });
