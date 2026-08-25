@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Chatbox||SIH-26</title>
+    <title>Chatbox for Kgp</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -19,20 +22,111 @@
             height: 100vh;
         }
 
-        .app {
+
+        /* =================================
+           JOIN SCREEN
+        ================================= */
+
+        .join-screen {
+
             height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 15px;
+
+            background: #f4f6f8;
+        }
+
+        .join-screen h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .join-screen input {
+
+            width: 280px;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        .join-screen input:focus {
+            border-color: #2563eb;
+        }
+
+        .join-screen button {
+
+            width: 280px;
+
+            padding: 12px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #2563eb;
+            color: white;
+
+            font-size: 15px;
+
+            cursor: pointer;
+        }
+
+        .join-screen button:hover {
+            background: #1d4ed8;
+        }
+
+        #joinError {
+
+            color: #dc2626;
+
+            font-size: 14px;
+
+            min-height: 18px;
+        }
+
+
+        /* =================================
+           APP
+        ================================= */
+
+        .app {
+
+            height: 100vh;
+
             display: flex;
             flex-direction: column;
         }
 
-        /* Header */
+
+        /* =================================
+           HEADER
+        ================================= */
+
         .header {
+
             height: 60px;
+
             background: #2563eb;
+
             color: white;
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
+
             padding: 0 20px;
         }
 
@@ -52,37 +146,87 @@
             color: #fecaca;
         }
 
-        /* Main area */
+
+        /* =================================
+           MAIN
+        ================================= */
+
         .main {
+
             flex: 1;
+
             display: flex;
+
             overflow: hidden;
         }
 
-        /* Updates sidebar */
+
+        /* =================================
+           UPDATES SIDEBAR
+        ================================= */
+
         .updates {
+
             width: 280px;
+
             background: white;
+
             border-right: 1px solid #ddd;
+
             padding: 20px;
+
             overflow-y: auto;
         }
 
         .updates h2 {
+
             font-size: 18px;
+
             margin-bottom: 15px;
         }
 
+
+        /* =================================
+           ONLINE COUNT
+        ================================= */
+
+        .online-count {
+
+            margin-bottom: 20px;
+
+            padding: 10px;
+
+            background: #f0fdf4;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            color: #166534;
+        }
+
+
+        /* =================================
+           UPDATE
+        ================================= */
+
         .update {
+
             background: #eff6ff;
+
             border-left: 4px solid #2563eb;
+
             padding: 12px;
+
             margin-bottom: 12px;
+
             border-radius: 5px;
         }
 
         .update strong {
+
             display: block;
+
             margin-bottom: 5px;
         }
 
@@ -90,65 +234,106 @@
             color: #666;
         }
 
-        /* Chat */
+
+        /* =================================
+           CHAT
+        ================================= */
+
         .chat {
+
             flex: 1;
+
             display: flex;
+
             flex-direction: column;
+
             min-width: 0;
         }
 
         .messages {
+
             flex: 1;
+
             padding: 20px;
+
             overflow-y: auto;
         }
 
         .message {
+
             margin-bottom: 15px;
+
             max-width: 70%;
         }
 
         .message .username {
+
             font-size: 13px;
+
             font-weight: bold;
+
             margin-bottom: 4px;
+
             color: #555;
         }
 
         .message .text {
+
             display: inline-block;
+
             background: white;
+
             padding: 10px 14px;
+
             border-radius: 10px;
+
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
         .message.me {
+
             margin-left: auto;
+
             text-align: right;
         }
 
         .message.me .text {
+
             background: #2563eb;
+
             color: white;
         }
 
-        /* Input area */
+
+        /* =================================
+           INPUT AREA
+        ================================= */
+
         .input-area {
+
             background: white;
+
             border-top: 1px solid #ddd;
+
             padding: 12px;
+
             display: flex;
+
             gap: 10px;
         }
 
         .input-area input {
+
             flex: 1;
+
             padding: 12px;
+
             border: 1px solid #ccc;
+
             border-radius: 8px;
+
             font-size: 15px;
+
             outline: none;
         }
 
@@ -157,12 +342,19 @@
         }
 
         .input-area button {
+
             padding: 0 20px;
+
             border: none;
+
             border-radius: 8px;
+
             background: #2563eb;
+
             color: white;
+
             cursor: pointer;
+
             font-size: 15px;
         }
 
@@ -170,8 +362,13 @@
             background: #1d4ed8;
         }
 
-        /* Mobile */
+
+        /* =================================
+           MOBILE
+        ================================= */
+
         @media (max-width: 700px) {
+
             .updates {
                 display: none;
             }
@@ -179,222 +376,668 @@
             .message {
                 max-width: 85%;
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-<div class="app">
 
-    <!-- Header -->
-    <header class="header">
+    <!-- =================================
+         JOIN SCREEN
+    ================================= -->
+
+    <div id="joinScreen" class="join-screen">
+
         <h1>💬 Chatbox</h1>
 
-        <div class="status">
-            <span id="connectionStatus" class="offline">
-                ● Disconnected
-            </span>
-        </div>
-    </header>
+        <input
+            id="usernameInput"
+            type="text"
+            placeholder="Enter your username"
+            maxlength="20"
+            autocomplete="off"
+        >
+
+        <button id="joinButton">
+            Join Chat
+        </button>
+
+        <p id="joinError"></p>
+
+    </div>
 
 
-    <!-- Main -->
-    <main class="main">
+    <!-- =================================
+         CHAT APPLICATION
+    ================================= -->
 
-        <!-- Updates -->
-        <aside class="updates">
+    <div
+        id="chatApp"
+        class="app"
+        style="display: none;"
+    >
 
-            <h2>📢 Updates</h2>
 
-            <div id="updatesList">
+        <!-- =================================
+             HEADER
+        ================================= -->
 
-                <div class="update">
-                    <strong>Welcome!</strong>
-                    <p>Welcome to our group chat.</p>
-                    <small>Today</small>
-                </div>
+        <header class="header">
+
+            <h1>💬 Chatbox</h1>
+
+            <div class="status">
+
+                <span
+                    id="connectionStatus"
+                    class="offline"
+                >
+                    ● Disconnected
+                </span>
 
             </div>
 
-        </aside>
+        </header>
 
 
-        <!-- Chat -->
-        <section class="chat">
+        <!-- =================================
+             MAIN
+        ================================= -->
 
-            <!-- Messages -->
-            <div id="messages" class="messages">
+        <main class="main">
 
-                <div class="message">
-                    <div class="username">System</div>
-                    <div class="text">
-                        Welcome to the group!
+
+            <!-- =================================
+                 UPDATES
+            ================================= -->
+
+            <aside class="updates">
+
+                <h2>📢 stress buster</h2>
+
+
+                <!-- Online count -->
+
+                <div class="online-count">
+
+                    👥 Online:
+
+                    <span id="onlineCount">
+                        0
+                    </span>
+
+                </div>
+
+
+                <!-- Updates -->
+
+                <div id="updatesList">
+
+                    <div class="update">
+
+                        <strong>
+                            Welcome!
+                        </strong>
+
+                        <p>
+                            don't know what to do in rest time,
+                            Here is your destination.
+                        </p>
+
+                        <small>
+                            Today
+                        </small>
+
                     </div>
+
                 </div>
 
-            </div>
+            </aside>
 
 
-            <!-- Message input -->
-            <form id="messageForm" class="input-area">
+            <!-- =================================
+                 CHAT
+            ================================= -->
 
-                <input
-                    id="messageInput"
-                    type="text"
-                    placeholder="Type a message..."
-                    autocomplete="off"
-                    required
+            <section class="chat">
+
+
+                <!-- Messages -->
+
+                <div
+                    id="messages"
+                    class="messages"
                 >
 
-                <button type="submit">
-                    Send
-                </button>
+                    <div class="message">
 
-            </form>
+                        <div class="username">
+                            System
+                        </div>
 
-        </section>
+                        <div class="text">
+                            Welcome to the group!
+                        </div>
 
-    </main>
+                    </div>
 
-</div>
-
-
-<script>
-
-    /*
-     * WebSocket connection
-     *
-     * Our Node.js server will run on:
-     *
-     * ws://localhost:8080
-     */
-
-    const socket = new WebSocket("ws://localhost:8080");
+                </div>
 
 
-    // HTML elements
-    const messages = document.getElementById("messages");
-    const messageForm = document.getElementById("messageForm");
-    const messageInput = document.getElementById("messageInput");
-    const connectionStatus = document.getElementById("connectionStatus");
+                <!-- =================================
+                     MESSAGE INPUT
+                ================================= -->
+
+                <form
+                    id="messageForm"
+                    class="input-area"
+                >
+
+                    <!-- IMPORTANT:
+                         There is NO username input here anymore.
+                         The server already knows who you are.
+                    -->
+
+                    <input
+                        id="messageInput"
+                        type="text"
+                        placeholder="Type a message..."
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button type="submit">
+                        Send
+                    </button>
+
+                </form>
 
 
-    // When WebSocket connects
-    socket.addEventListener("open", () => {
+            </section>
 
-        console.log("Connected to server");
+        </main>
 
-        connectionStatus.textContent = "● Connected";
-        connectionStatus.className = "online";
-
-    });
+    </div>
 
 
-    // When server sends a message
-    socket.addEventListener("message", (event) => {
+    <!-- =================================
+         JAVASCRIPT
+    ================================= -->
 
-        console.log("Server:", event.data);
-
-        addMessage("Group", event.data, false);
-
-    });
+    <script>
 
 
-    // When connection closes
-    socket.addEventListener("close", () => {
+        // =================================
+        // VARIABLES
+        // =================================
 
-        console.log("Disconnected");
+        let socket = null;
 
-        connectionStatus.textContent = "● Disconnected";
-        connectionStatus.className = "offline";
-
-    });
+        let username = "";
 
 
-    // When connection fails
-    socket.addEventListener("error", (error) => {
+        // =================================
+        // HTML ELEMENTS
+        // =================================
 
-        console.error("WebSocket error:", error);
+        const joinScreen =
+            document.getElementById("joinScreen");
 
-    });
+        const chatApp =
+            document.getElementById("chatApp");
+
+        const usernameInput =
+            document.getElementById("usernameInput");
+
+        const joinButton =
+            document.getElementById("joinButton");
+
+        const joinError =
+            document.getElementById("joinError");
+
+        const messages =
+            document.getElementById("messages");
+
+        const messageForm =
+            document.getElementById("messageForm");
+
+        const messageInput =
+            document.getElementById("messageInput");
+
+        const connectionStatus =
+            document.getElementById("connectionStatus");
+
+        const onlineCount =
+            document.getElementById("onlineCount");
 
 
-    // Send message
-    messageForm.addEventListener("submit", (event) => {
+        // =================================
+        // JOIN CHAT
+        // =================================
 
-        event.preventDefault();
+        joinButton.addEventListener("click", () => {
 
-        const message = messageInput.value.trim();
+            username = usernameInput.value.trim();
 
-        if (message === "") {
-            return;
+
+            // Check username
+
+            if (username === "") {
+
+                joinError.textContent =
+                    "Please enter a username.";
+
+                usernameInput.focus();
+
+                return;
+            }
+
+
+            // Clear previous error
+
+            joinError.textContent = "";
+
+
+            // Disable button while connecting
+
+            joinButton.disabled = true;
+
+            joinButton.textContent =
+                "Connecting...";
+
+
+            // Create WebSocket connection
+
+           const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+const socket = new WebSocket(`${protocol}//${location.host}`);
+
+
+            // =================================
+            // CONNECTION OPEN
+            // =================================
+
+            socket.addEventListener("open", () => {
+
+                console.log(
+                    "Connected to server"
+                );
+
+
+                connectionStatus.textContent =
+                    "● Connected";
+
+                connectionStatus.className =
+                    "online";
+
+
+                // Tell server who we are
+
+                socket.send(
+                    JSON.stringify({
+                        type: "join",
+                        username: username
+                    })
+                );
+
+            });
+
+
+            // =================================
+            // SERVER MESSAGE
+            // =================================
+
+            socket.addEventListener(
+                "message",
+                (event) => {
+
+                    const data =
+                        JSON.parse(event.data);
+
+
+                    // -----------------------------
+                    // JOIN SUCCESS
+                    // -----------------------------
+
+                    if (
+                        data.type ===
+                        "join_success"
+                    ) {
+
+                        console.log(
+                            "Joined as:",
+                            data.username
+                        );
+
+
+                        // Hide join screen
+
+                        joinScreen.style.display =
+                            "none";
+
+
+                        // Show chat
+
+                        chatApp.style.display =
+                            "flex";
+
+
+                        // Focus message input
+
+                        messageInput.focus();
+
+
+                        return;
+                    }
+
+
+                    // -----------------------------
+                    // JOIN ERROR
+                    // -----------------------------
+
+                    if (
+                        data.type ===
+                        "join_error"
+                    ) {
+
+                        console.log(
+                            "Join failed:",
+                            data.message
+                        );
+
+
+                        joinError.textContent =
+                            data.message;
+
+
+                        joinButton.disabled =
+                            false;
+
+                        joinButton.textContent =
+                            "Join Chat";
+
+
+                        connectionStatus.textContent =
+                            "● Disconnected";
+
+                        connectionStatus.className =
+                            "offline";
+
+
+                        socket.close();
+
+                        socket = null;
+
+
+                        return;
+                    }
+
+
+                    // -----------------------------
+                    // ONLINE COUNT
+                    // -----------------------------
+
+                    if (
+                        data.type ===
+                        "online_count"
+                    ) {
+
+                        onlineCount.textContent =
+                            data.count;
+
+                        return;
+                    }
+
+
+                    // -----------------------------
+                    // CHAT MESSAGE
+                    // -----------------------------
+
+                    if (
+                        data.type ===
+                        "chat"
+                    ) {
+
+                        addMessage(
+                            data.username,
+                            data.message,
+                            data.username === username
+                        );
+
+                        return;
+                    }
+
+                }
+            );
+
+
+            // =================================
+            // CONNECTION CLOSED
+            // =================================
+
+            socket.addEventListener(
+                "close",
+                () => {
+
+                    console.log(
+                        "Disconnected"
+                    );
+
+
+                    connectionStatus.textContent =
+                        "● Disconnected";
+
+                    connectionStatus.className =
+                        "offline";
+
+
+                    // If the chat was already open,
+                    // return to join screen
+
+                    if (
+                        chatApp.style.display ===
+                        "flex"
+                    ) {
+
+                        chatApp.style.display =
+                            "none";
+
+                        joinScreen.style.display =
+                            "flex";
+
+                    }
+
+
+                    joinButton.disabled =
+                        false;
+
+                    joinButton.textContent =
+                        "Join Chat";
+
+                }
+            );
+
+
+            // =================================
+            // CONNECTION ERROR
+            // =================================
+
+            socket.addEventListener(
+                "error",
+                (error) => {
+
+                    console.error(
+                        "WebSocket error:",
+                        error
+                    );
+
+                    joinError.textContent =
+                        "Could not connect to server.";
+
+                    joinButton.disabled =
+                        false;
+
+                    joinButton.textContent =
+                        "Join Chat";
+
+                }
+            );
+
+        });
+
+
+        // =================================
+        // SEND CHAT MESSAGE
+        // =================================
+
+        messageForm.addEventListener(
+            "submit",
+            (event) => {
+
+                event.preventDefault();
+
+
+                const message =
+                    messageInput.value.trim();
+
+
+                if (message === "") {
+                    return;
+                }
+
+
+                // Check WebSocket
+
+                if (
+                    !socket ||
+                    socket.readyState !==
+                    WebSocket.OPEN
+                ) {
+
+                    alert(
+                        "Not connected to the server."
+                    );
+
+                    return;
+                }
+
+
+                // Send ONLY the message.
+                //
+                // The server already knows
+                // our username.
+
+                socket.send(
+                    JSON.stringify({
+                        type: "chat",
+                        message: message
+                    })
+                );
+
+
+                // Clear input
+
+                messageInput.value = "";
+
+                messageInput.focus();
+
+            }
+        );
+
+
+        // =================================
+        // ADD MESSAGE
+        // =================================
+
+        function addMessage(
+            username,
+            text,
+            isMe
+        ) {
+
+            const messageElement =
+                document.createElement("div");
+
+
+            messageElement.classList.add(
+                "message"
+            );
+
+
+            if (isMe) {
+
+                messageElement.classList.add(
+                    "me"
+                );
+
+            }
+
+
+            messageElement.innerHTML = `
+                <div class="username">
+                    ${escapeHTML(username)}
+                </div>
+
+                <div class="text">
+                    ${escapeHTML(text)}
+                </div>
+            `;
+
+
+            messages.appendChild(
+                messageElement
+            );
+
+
+            // Scroll to newest message
+
+            messages.scrollTop =
+                messages.scrollHeight;
+
         }
 
-        // Make sure WebSocket is connected
-        if (socket.readyState !== WebSocket.OPEN) {
 
-            alert("Not connected to the server.");
+        // =================================
+        // PREVENT HTML INJECTION
+        // =================================
 
-            return;
+        function escapeHTML(text) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent = text;
+
+            return div.innerHTML;
+
         }
 
 
-        // Send message to Node.js
-        socket.send(message);
+        // =================================
+        // ENTER KEY ON USERNAME
+        // =================================
 
+        usernameInput.addEventListener(
+            "keydown",
+            (event) => {
 
-        // Show our own message immediately
-        addMessage("You", message, true);
+                if (event.key === "Enter") {
 
+                    event.preventDefault();
 
-        // Clear input
-        messageInput.value = "";
+                    joinButton.click();
 
-        messageInput.focus();
+                }
 
-    });
+            }
+        );
 
-
-    // Add message to chat
-    function addMessage(username, text, isMe) {
-
-        const messageElement = document.createElement("div");
-
-        messageElement.classList.add("message");
-
-        if (isMe) {
-            messageElement.classList.add("me");
-        }
-
-
-        messageElement.innerHTML = `
-            <div class="username">${escapeHTML(username)}</div>
-            <div class="text">${escapeHTML(text)}</div>
-        `;
-
-
-        messages.appendChild(messageElement);
-
-
-        // Scroll to newest message
-        messages.scrollTop = messages.scrollHeight;
-
-    }
-
-
-    // Prevent HTML injection
-    function escapeHTML(text) {
-
-        const div = document.createElement("div");
-
-        div.textContent = text;
-
-        return div.innerHTML;
-
-    }
-
-</script>
+    </script>
 
 </body>
+
 </html>
