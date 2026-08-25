@@ -86,6 +86,11 @@
             background: #1d4ed8;
         }
 
+        .join-screen button:disabled {
+            background: #93c5fd;
+            cursor: not-allowed;
+        }
+
         #joinError {
 
             color: #dc2626;
@@ -288,6 +293,8 @@
             border-radius: 10px;
 
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+            word-break: break-word;
         }
 
         .message.me {
@@ -538,16 +545,12 @@
                     class="input-area"
                 >
 
-                    <!-- IMPORTANT:
-                         There is NO username input here anymore.
-                         The server already knows who you are.
-                    -->
-
                     <input
                         id="messageInput"
                         type="text"
                         placeholder="Type a message..."
                         autocomplete="off"
+                        maxlength="1000"
                         required
                     >
 
@@ -651,10 +654,23 @@
                 "Connecting...";
 
 
-            // Create WebSocket connection
+            // =================================
+            // CREATE WEBSOCKET CONNECTION
+            // =================================
 
-           const protocol = location.protocol === "https:" ? "wss:" : "ws:";
-const socket = new WebSocket(`${protocol}//${location.host}`);
+            const protocol =
+                location.protocol === "https:"
+                    ? "wss:"
+                    : "ws:";
+
+
+            // IMPORTANT:
+            // Assign to the GLOBAL socket variable.
+            // Do NOT use "const" here.
+
+            socket = new WebSocket(
+                `${protocol}//${location.host}`
+            );
 
 
             // =================================
@@ -695,8 +711,22 @@ const socket = new WebSocket(`${protocol}//${location.host}`);
                 "message",
                 (event) => {
 
-                    const data =
-                        JSON.parse(event.data);
+                    let data;
+
+                    try {
+
+                        data =
+                            JSON.parse(event.data);
+
+                    } catch (error) {
+
+                        console.error(
+                            "Invalid server message:",
+                            error
+                        );
+
+                        return;
+                    }
 
 
                     // -----------------------------
@@ -835,7 +865,7 @@ const socket = new WebSocket(`${protocol}//${location.host}`);
                         "offline";
 
 
-                    // If the chat was already open,
+                    // If chat was already open,
                     // return to join screen
 
                     if (
@@ -875,8 +905,10 @@ const socket = new WebSocket(`${protocol}//${location.host}`);
                         error
                     );
 
+
                     joinError.textContent =
                         "Could not connect to server.";
+
 
                     joinButton.disabled =
                         false;
@@ -1035,6 +1067,7 @@ const socket = new WebSocket(`${protocol}//${location.host}`);
 
             }
         );
+
 
     </script>
 
